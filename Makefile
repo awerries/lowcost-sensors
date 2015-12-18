@@ -30,6 +30,6 @@ $(I2Clib)/I2C.o: $(I2Clib)/I2Cdev.cpp $(I2Clib)/I2Cdev.h
 $(Maglib)/HMC6343.o: $(Maglib)/HMC6343.cpp $(Maglib)/HMC6343.h
 
 clean:
-	rm $(OBJS)
-	rm imu_reader
-	rm mag_reader
+	rm -f $(IMU_OBJS) $(MAG_OBJS)
+	rm -f imu_reader
+	rm -f mag_reader

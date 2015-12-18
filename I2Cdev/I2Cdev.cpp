@@ -109,6 +109,21 @@ int8_t I2Cdev::readByte(uint8_t devAddr, uint8_t regAddr, uint8_t *data) {
   data[0] = (uint8_t) recvBuf[0];
   return response == BCM2835_I2C_REASON_OK;
 }
+/** Read multiple bytes without specifying any address.
+ * @param devAddr I2C slave device address
+ * @param length Number of bytes to read
+ * @param data Buffer to store read data in
+ * @return I2C_TransferReturn_TypeDef http://downloads.energymicro.com/documentation/doxygen/group__I2C.html
+ */
+int8_t I2Cdev::readBytes(uint8_t devAddr, uint8_t length, uint8_t *data) {
+  bcm2835_i2c_setSlaveAddress(devAddr);
+  uint8_t response = bcm2835_i2c_read(recvBuf, length);
+  int i;
+  for (i = 0; i < length ; i++) {
+    data[i] = (uint8_t) recvBuf[i];
+  }
+  return response == BCM2835_I2C_REASON_OK;
+}
 
 /** Read multiple bytes from an 8-bit device register.
  * @param devAddr I2C slave device address
@@ -180,6 +195,18 @@ bool I2Cdev::writeBits(uint8_t devAddr, uint8_t regAddr, uint8_t bitStart, uint8
     response = bcm2835_i2c_write(sendBuf, 2);
     }
   return response == BCM2835_I2C_REASON_OK;
+}
+
+/** Write single byte, no specified address.
+ * @param devAddr I2C slave device address
+ * @param data New byte value to write
+ * @return Status of operation (true = success)
+ */
+bool I2Cdev::writeByte(uint8_t devAddr, uint8_t data) {
+  bcm2835_i2c_setSlaveAddress(devAddr);
+  sendBuf[0] = data;
+  uint8_t response = bcm2835_i2c_write(sendBuf, 1);
+  return response == BCM2835_I2C_REASON_OK ;
 }
 
 /** Write single byte to an 8-bit device register.

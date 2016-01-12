@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <bcm2835.h>
-#include "I2Cdev/I2Cdev.h"
-#include "MPU6050/MPU6050.h"
+#include "I2Cdev.h"
+#include "MPU6050.h"
 #include <math.h>
 
 int main(int argc, char **argv) {

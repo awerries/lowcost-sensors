@@ -1,5 +1,5 @@
 // Libraries for I2C and the HMC6343 sensor
-#include "HMC6343/HMC6343.h"
+#include "HMC6343.h"
 #include <bcm2835.h>
 #include <stdio.h>
 

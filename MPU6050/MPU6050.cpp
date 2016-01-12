@@ -1757,26 +1757,6 @@ bool MPU6050::getIntDataReadyStatus() {
 
 // ACCEL_*OUT_* registers
 
-/** Get raw 9-axis motion sensor readings (accel/gyro/compass).
- * FUNCTION NOT FULLY IMPLEMENTED YET.
- * @param ax 16-bit signed integer container for accelerometer X-axis value
- * @param ay 16-bit signed integer container for accelerometer Y-axis value
- * @param az 16-bit signed integer container for accelerometer Z-axis value
- * @param gx 16-bit signed integer container for gyroscope X-axis value
- * @param gy 16-bit signed integer container for gyroscope Y-axis value
- * @param gz 16-bit signed integer container for gyroscope Z-axis value
- * @param mx 16-bit signed integer container for magnetometer X-axis value
- * @param my 16-bit signed integer container for magnetometer Y-axis value
- * @param mz 16-bit signed integer container for magnetometer Z-axis value
- * @see getMotion6()
- * @see getAcceleration()
- * @see getRotation()
- * @see MPU6050_RA_ACCEL_XOUT_H
- */
-void MPU6050::getMotion9(int16_t* ax, int16_t* ay, int16_t* az, int16_t* gx, int16_t* gy, int16_t* gz, int16_t* mx, int16_t* my, int16_t* mz) {
-    getMotion6(ax, ay, az, gx, gy, gz);
-    // TODO: magnetometer integration
-}
 /** Get raw 6-axis motion sensor readings (accel/gyro).
  * Retrieves all currently available motion sensor values.
  * @param ax 16-bit signed integer container for accelerometer X-axis value

@@ -23,7 +23,7 @@ Distributed as-is; no warranty is given.
 
 #include <unistd.h>
 #include <bcm2835.h>
-#include "../I2Cdev/I2Cdev.h"
+#include "I2Cdev.h"
 
 // HMC6343 I2C Address (0x32 >> 1 = 0x19)
 #define HMC6343_I2C_ADDR 0x19

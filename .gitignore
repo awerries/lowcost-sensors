@@ -28,7 +28,7 @@
 *.app
 
 # Bin folder
-*bin/*
+*/bin/*
 
 # Python
 env/

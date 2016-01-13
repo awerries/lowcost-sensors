@@ -14,6 +14,7 @@ MAGsrc = HMC6343/HMC6343.cpp
 MAGobj =$(MAGsrc:%.cpp=%.o)
 IMUREADsrc = Readers/imu_reader.cpp
 MAGREADsrc = Readers/mag_reader.cpp
+MAGCONFIGsrc = Config_Tools/mag_config.cpp
 BIN_DIR = bin
 
 IMU_BIN := $(BIN_DIR)/imu_reader
@@ -22,6 +23,7 @@ IMU_OBJS := $(I2Cobj) $(IMUobj)
 IMU_INC := -II2Cdev -IMPU6050
 
 MAG_BIN := $(BIN_DIR)/mag_reader
+MAGCONFIG_BIN := $(BIN_DIR)/mag_config
 MAG_SRCS := $(I2Csrc) $(MAGsrc)
 MAG_OBJS := $(I2Cobj) $(MAGobj)
 MAG_INC := -II2Cdev -IHMC6343
@@ -29,7 +31,7 @@ MAG_INC := -II2Cdev -IHMC6343
 
 .PHONY: directories
 
-all: directories $(IMU_BIN) $(MAG_BIN)
+all: directories $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN)
 
 directories: $(BIN_DIR)
 
@@ -42,6 +44,8 @@ $(IMU_BIN): $(IMU_OBJS) $(IMUREADsrc)
 $(MAG_BIN): $(MAG_OBJS) $(MAGREADsrc)
 	$(CXX) $(LDFLAGS) $(MAG_INC) -o $(MAG_BIN) $(MAGREADsrc) $(MAG_OBJS) $(LDLIBS)
 
+$(MAGCONFIG_BIN): $(MAG_OBJS) $(MAGCONFIGsrc)
+	$(CXX) $(LDFLAGS) $(MAG_INC) -o $(MAGCONFIG_BIN) $(MAGCONFIGsrc) $(MAG_OBJS) $(LDLIBS)
 
 $(I2Cobj): $(I2Csrc) $(I2Csrc:%.cpp=%.h)
 

@@ -8,11 +8,14 @@
 #include <bcm2835.h>
 #include "HMC6343.h"
 
+#define PI 3.14159265359
+
 // Signal handler callback function
 volatile sig_atomic_t done = 0;
 void sig_handler(int signum) {
     done = 1;
 }
+
 
 int main() {
     // Set up signal handler
@@ -26,7 +29,7 @@ int main() {
     char filename_buffer[255];
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    sprintf(filename_buffer, "magdata_%04d-%02d-%02dT%02d%02d%02d.log", 
+    sprintf(filename_buffer, "mag_data_%04d-%02d-%02dT%02d%02d%02d.log", 
             tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, 
             tm.tm_hour, tm.tm_min, tm.tm_sec);
     FILE *f = fopen(filename_buffer, "w");
@@ -54,11 +57,11 @@ int main() {
         fprintf(f,"%ld.%06ld,%ld.%06ld,",
             (long int) start_time.tv_sec, (long int) start_time.tv_usec, 
             (long int) current_time.tv_sec, (long int) current_time.tv_usec);
-        // Print yaw, pitch, roll in degrees
-        fprintf(f,"%0.4f,%0.4f,%0.4f,",
-                (float) compass.heading/10.0, (float) compass.pitch/10.0, (float) compass.roll/10.0);
+        // Print yaw, pitch, roll in radians
+        fprintf(f,"%0.6f,%0.6f,%0.6f,",
+                (float) compass.heading/10.0*PI/180.0, (float) compass.pitch/10.0*PI/180.0, (float) compass.roll/10.0*PI/180.0);
         // Print accel xyz in g's
-        fprintf(f,"%0.4f,%0.4f,%0.4f,",
+        fprintf(f,"%0.6f,%0.6f,%0.6f,",
                 (float) compass.accelX/1024.0, (float) compass.accelY/1024.0, (float) compass.accelZ/1024.0);
         // Print temperature in Celsius?
         fprintf(f,"%0.4f\n", (float) compass.temperature);

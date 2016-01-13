@@ -1,59 +1,74 @@
-// Libraries for I2C and the HMC6343 sensor
-#include "HMC6343.h"
-#include <bcm2835.h>
+// Standard libraries
 #include <stdio.h>
+#include <signal.h>
+#include <time.h>
+#include <sys/time.h>
 
-void printHeadingData(HMC6343 compass);
-void printAccelData(HMC6343 compass);
+// Libraries for I2C and the HMC6343 sensor
+#include <bcm2835.h>
+#include "HMC6343.h"
+
+// Signal handler callback function
+volatile sig_atomic_t done = 0;
+void sig_handler(int signum) {
+    done = 1;
+}
 
 int main() {
+    // Set up signal handler
+    struct sigaction action;
+    memset(&action, 0, sizeof(struct sigaction));
+    action.sa_handler = sig_handler;
+    sigaction(SIGTERM, &action, NULL);
+    sigaction(SIGINT, &action, NULL);
+
+    // Create new file with timestamp
+    char filename_buffer[255];
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(filename_buffer, "magdata_%04d-%02d-%02dT%02d%02d%02d.log", 
+            tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, 
+            tm.tm_hour, tm.tm_min, tm.tm_sec);
+    FILE *f = fopen(filename_buffer, "w");
+
+    // Initialize I2C and the compass itself
     I2Cdev::initialize();
-    HMC6343 compass; // Declare the sensor object
+    HMC6343 compass;
     if (!compass.init()) {
-      printf("Sensor Initialization Failed\n"); // Report failure, is the sensor wiring correct?
+      // Report failure, is the sensor wiring correct?
+      printf("Sensor Initialization Failed\n");
     }
 
-    while(true) {
-        // Read, calculate, and print the heading, pitch, and roll from the sensor
+    // Initialize time
+    struct timeval start_time, current_time;
+
+    while(!done) {
+        // Read compass data
+        gettimeofday(&start_time, NULL);
+        compass.readTilt();
         compass.readHeading();
-        printHeadingData(compass);
-        
-        // Read, calculate, and print the acceleration on the x, y, and z axis of the sensor
         compass.readAccel();
-        printAccelData(compass);
+        compass.readMag();
+        gettimeofday(&current_time, NULL);
+        // Print start and end times of measurement
+        fprintf(f,"%ld.%06ld,%ld.%06ld,",
+            (long int) start_time.tv_sec, (long int) start_time.tv_usec, 
+            (long int) current_time.tv_sec, (long int) current_time.tv_usec);
+        // Print yaw, pitch, roll in degrees
+        fprintf(f,"%0.4f,%0.4f,%0.4f,",
+                (float) compass.heading/10.0, (float) compass.pitch/10.0, (float) compass.roll/10.0);
+        // Print accel xyz in g's
+        fprintf(f,"%0.4f,%0.4f,%0.4f,",
+                (float) compass.accelX/1024.0, (float) compass.accelY/1024.0, (float) compass.accelZ/1024.0);
+        // Print temperature in Celsius?
+        fprintf(f,"%0.4f\n", (float) compass.temperature);
+        fflush(f);
         
         // Wait for minimum time
         bcm2835_delay(200);
     }
+    printf("Exiting cleanly...\n");
+    fclose(f);
     return 0;
-}
-
-// Print both the raw values of the compass heading, pitch, and roll
-// as well as calculate and print the compass values in degrees
-// Sample Output:
-// Heading Data (Raw value, in degrees):
-// Heading: 3249  324.90°
-// Pitch:   28    2.80°
-// Roll:    24    2.40°
-void printHeadingData(HMC6343 compass) {   
-    printf("Heading Data (Raw value, in degrees):\n");
-    printf("  Heading: %04d, %0.4f\u00b0\n",compass.heading, (float) compass.heading/10.0);
-    printf("  Pitch  : %04d, %0.4f\u00b0\n",compass.pitch, (float) compass.pitch/10.0);
-    printf("  Roll   : %04d, %0.4f\u00b0\n",compass.roll, (float) compass.roll/10.0);
-}
-
-// Print both the raw values of the compass acceleration measured on each axis
-// as well as calculate and print the accelerations in g forces
-// Sample Output:
-// Accelerometer Data (Raw value, in g forces):
-// X: -52    -0.05g
-// Y: -44    -0.04g
-// Z: -1047  -1.02g
-void printAccelData(HMC6343 compass) {
-    printf("Accelerometer Data (Raw value, in g forces):\n");
-    printf("  X: %04d, %0.4fg\n", compass.accelX, (float) compass.accelX/1024.0);
-    printf("  Y: %04d, %0.4fg\n", compass.accelY, (float) compass.accelY/1024.0);
-    printf("  Z: %04d, %0.4fg\n", compass.accelZ, (float) compass.accelZ/1024.0);
-    printf("\n");
 }
 

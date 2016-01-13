@@ -16,10 +16,12 @@ IMUREADsrc = Readers/imu_reader.cpp
 MAGREADsrc = Readers/mag_reader.cpp
 BIN_DIR = bin
 
+IMU_BIN := $(BIN_DIR)/imu_reader
 IMU_SRCS := $(I2Csrc) $(IMUsrc)
 IMU_OBJS := $(I2Cobj) $(IMUobj)
 IMU_INC := -II2Cdev -IMPU6050
 
+MAG_BIN := $(BIN_DIR)/mag_reader
 MAG_SRCS := $(I2Csrc) $(MAGsrc)
 MAG_OBJS := $(I2Cobj) $(MAGobj)
 MAG_INC := -II2Cdev -IHMC6343
@@ -27,18 +29,18 @@ MAG_INC := -II2Cdev -IHMC6343
 
 .PHONY: directories
 
-all: directories imu_reader mag_reader
+all: directories $(IMU_BIN) $(MAG_BIN)
 
-directories: ${BIN_DIR}
+directories: $(BIN_DIR)
 
-${BIN_DIR}:
-	${MKDIR_P} ${BIN_DIR}
+$(BIN_DIR):
+	$(MKDIR_P) $(BIN_DIR)
 
-imu_reader: $(IMU_OBJS) $(IMUREADsrc)
-	$(CXX) $(LDFLAGS) $(IMU_INC) -o bin/imu_reader $(IMUREADsrc) $(IMU_OBJS) $(LDLIBS)
+$(IMU_BIN): $(IMU_OBJS) $(IMUREADsrc)
+	$(CXX) $(LDFLAGS) $(IMU_INC) -o $(IMU_BIN) $(IMUREADsrc) $(IMU_OBJS) $(LDLIBS)
 
-mag_reader: $(MAG_OBJS) $(MAGREADsrc)
-	$(CXX) $(LDFLAGS) $(MAG_INC) -o bin/mag_reader $(MAGREADsrc) $(MAG_OBJS) $(LDLIBS)
+$(MAG_BIN): $(MAG_OBJS) $(MAGREADsrc)
+	$(CXX) $(LDFLAGS) $(MAG_INC) -o $(MAG_BIN) $(MAGREADsrc) $(MAG_OBJS) $(LDLIBS)
 
 
 $(I2Cobj): $(I2Csrc) $(I2Csrc:%.cpp=%.h)

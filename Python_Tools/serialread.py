@@ -13,17 +13,17 @@ start = b'4'
 def open_serial(port_flags):
     imu1, imu2, gps = None, None, None
     if port_flags[0]:
-        imu1 = serial.Serial(port='COM3', baudrate=57600,
+        imu1 = serial.Serial(port='/dev/ttyUSB0', baudrate=57600,
                 parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, 
                 bytesize=serial.EIGHTBITS, timeout=0)
 
     if port_flags[1]:
-        imu2 = serial.Serial(port='COM13', baudrate=115200,
+        imu2 = serial.Serial(port='/dev/ttyUSB1', baudrate=115200,
                 parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS, timeout=0)
 
     if port_flags[2]:
-        gps = serial.Serial(port='COM5', baudrate=115200,
+        gps = serial.Serial(port='/dev/ttyUSB2', baudrate=115200,
                 parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS, timeout=0)
 

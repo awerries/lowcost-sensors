@@ -8,13 +8,11 @@ https://github.com/sparkfun/HMC6343_Breakout
 This file implements the functions of the HMC6343 sensor class as well as
 providing documentation on what each library function does.
 
-Developed/Tested with:
-Arduino Uno
-Arduino IDE 1.0.5 & 1.5.2
-
 This code is beerware; if you see me (or any other SparkFun employee) at the 
 local, and you've found our code helpful, please buy us a round!
 Distributed as-is; no warranty is given. 
+
+Edits by Adam Werries to use the I2Cdev libraries instead (raspberry pi).
 ******************************************************************************/
 
 #include "HMC6343.h"

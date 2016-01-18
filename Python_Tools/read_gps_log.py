@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-""" Code turns BESTXYZ output from NovAtel into a matlab-friendly format.
-         
+""" Code parses BESTXYZ output from NovAtel GPS and writes to a matlab-friendly csv file.
+
+Author: Adam Werries, awerries@cmu.edu
+
 New Format:  1     2                   3               4  5  6  7      8      9      10  11  12  13      14      15      16        17
              time, sol good? (1 or 0), WAAS? (1 or 0), x, y, z, sig_x, sig_y, sig_z, vx, vy, vz, sig_vx, sig_vy, sig_vz, num_sats, sol_sats 
 """

@@ -1,8 +1,10 @@
-// I2Cdev library collection - Main I2C device class
-// Abstracts bit and byte I2C R/W functions into a convenient class
-// RaspberryPi bcm2835 library port: bcm2835 library available at http://www.airspayce.com/mikem/bcm2835/index.html
-// Based on Arduino's I2Cdev by Jeff Rowberg <jeff@rowberg.net>
-//
+/* I2Cdev library collection - Main I2C device class
+   Abstracts bit and byte I2C R/W functions into a convenient class
+   RaspberryPi bcm2835 library port: bcm2835 library available at http://www.airspayce.com/mikem/bcm2835/index.html
+   Based on Arduino's I2Cdev by Jeff Rowberg <jeff@rowberg.net>
+
+  Edited by Adam Werries to add additional functions that allow for odd I2C requirements from non-compliant devices.
+*/
 
 /* ============================================
 I2Cdev device library code is placed under the MIT license

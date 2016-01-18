@@ -1,7 +1,15 @@
 #!/usr/bin/env python
-"""Program written to read from serial ports for the purpose of logging timestamped data from serial sensors.
-Current implementation simply logs from three serial ports hardcoded into the program, which can be
-enabled/disabled based on setting the port_flags"""
+"""Simple script to read from serial ports for the purpose of logging timestamped data from serial-based sensors.
+Current implementation reads from three serial ports hard-coded into the open_serial() function, which must be
+enabled/disabled based on setting the port_flags as arguments. IMUs were Sparkfun Razor IMUs and the GPS was a NovAtel.
+
+Author: Adam Werries, awerries@cmu.edu
+
+Usage:
+    python3 serialread.py <port0 on/off> <port1 on/off> <port2 on/off>
+    python3 serialread.py 1 0 0
+    python3 serialread.py 0 1 1
+"""
 import sys
 import serial
 import io
@@ -9,7 +17,6 @@ from time import sleep, time
 from datetime import datetime
 
 start = b'4'
-
 def open_serial(port_flags):
     imu1, imu2, gps = None, None, None
     if port_flags[0]:

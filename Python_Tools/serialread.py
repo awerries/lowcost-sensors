@@ -23,7 +23,7 @@ def open_serial(port_flags):
                 bytesize=serial.EIGHTBITS, timeout=0)
 
     if port_flags[2]:
-        gps = serial.Serial(port='/dev/ttyUSB2', baudrate=115200,
+        gps = serial.Serial(port='/dev/ttyUSB0', baudrate=115200,
                 parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS, timeout=0)
 
@@ -83,7 +83,7 @@ def main(argv):
             imu2.flush()
         if gps:
             gps_log = open('gps_log.txt', 'w')
-            imu1.readline()
+            gps.readline()
 
         print('Starting logging...')
         while True:
@@ -93,9 +93,6 @@ def main(argv):
                 line2,imu2_start = log_imu(imu2, imu2_log, line2, imu2_start)
             if gps:
                 line3,gps_start = log_gps(gps, gps_log, line3, gps_start)
-                if output:
-                    print(output)
-                save_output(gps_log, output)
 
     finally:
         if imu1:

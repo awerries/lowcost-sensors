@@ -9,13 +9,11 @@ This header file declares the SFE_HMC6343 sensor class as well as its various
 functions and variables. It also defines sensor specifics including register
 addresses and sensor commands.
 
-Developed/Tested with:
-Arduino Uno
-Arduino IDE 1.0.5 & 1.5.2
-
 This code is beerware; if you see me (or any other SparkFun employee) at the 
 local, and you've found our code helpful, please buy us a round!
 Distributed as-is; no warranty is given. 
+
+Edits by Adam Werries to use the I2Cdev libraries instead (raspberry pi).
 ******************************************************************************/
 
 #ifndef HMC6343_h

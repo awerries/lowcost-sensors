@@ -42,6 +42,9 @@ int main() {
       printf("Sensor Initialization Failed\n");
     }
 
+    // Ensure orientation is selected, options are LEVEL, SIDEWAYS, and FLATFRONT (enumerated in HMC6343 header)
+    compass.setOrientation(SIDEWAYS);
+
     // Initialize time
     struct timeval start_time, current_time;
 

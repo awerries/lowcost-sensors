@@ -9,6 +9,8 @@ Usage:
     python3 serialread.py <port0 on/off> <port1 on/off> <port2 on/off>
     python3 serialread.py 1 0 0
     python3 serialread.py 0 1 1
+
+    Default is 0 0 1 if no arguments are given.
 """
 import sys
 import serial
@@ -20,12 +22,12 @@ start = b'4'
 def open_serial(port_flags):
     imu1, imu2, gps = None, None, None
     if port_flags[0]:
-        imu1 = serial.Serial(port='/dev/ttyUSB0', baudrate=57600,
+        imu1 = serial.Serial(port='/dev/ttyUSB1', baudrate=57600,
                 parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, 
                 bytesize=serial.EIGHTBITS, timeout=0)
 
     if port_flags[1]:
-        imu2 = serial.Serial(port='/dev/ttyUSB1', baudrate=115200,
+        imu2 = serial.Serial(port='/dev/ttyUSB2', baudrate=115200,
                 parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS, timeout=0)
 
@@ -68,6 +70,9 @@ def save_output(outputfile, output):
         print(output,end='')
 
 def main(argv):
+    # default is to only log GPS
+    if len(argv) < 4:
+        port_flags = [0, 0, 1]
     port_flags = [int(argv[1]), int(argv[2]), int(argv[3])]
     imu1, imu2, gps = None, None, None
     imu1_log, imu2_log, gps_log = None, None, None
@@ -76,21 +81,24 @@ def main(argv):
     line2 = list()
     line3 = list()
 
+    now = datetime.now().replace(microsecond=0).isoformat().translate(None, ':')
+
     try:
         print('Opening serial...')
         (imu1, imu2, gps) = open_serial(port_flags)
         sleep(2)
         if imu1:
-            imu1_log = open('imu1_log.txt', 'w')
+            imu1_log = open('imu1_log_{0}.log'.format(now), 'w')
             imu1.readline()
             imu1.write(start)
             imu1.flush()
         if imu2:
-            imu2_log = open('imu2_log.txt', 'w')
+            imu2_log = open('imu2_log_{1}.log'.format(now), 'w')
             imu2.flush()
         if gps:
-            gps_log = open('gps_log.txt', 'w')
+            gps_log = open('gps_log_{2}.log'.format(now), 'w')
             gps.readline()
+            gps.flush()
 
         print('Starting logging...')
         while True:

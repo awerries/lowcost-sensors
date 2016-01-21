@@ -1,8 +1,7 @@
 CC = gcc
 CXX = g++
 CPPFLAGS = -g -Wall -Wpedantic -Wextra
-LDFLAGS = -g
-LDLIBS = -lbcm2835 -lm
+LDFLAGS = -g -lbcm2835 -lm
 MKDIR_P = mkdir -p
 BASEDIR = $(shell pwd)
 

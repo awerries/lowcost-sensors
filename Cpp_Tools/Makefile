@@ -38,24 +38,22 @@ directories: $(BIN_DIR)
 $(BIN_DIR):
 	$(MKDIR_P) $(BIN_DIR)
 
-$(IMU_BIN): $(IMU_OBJS) $(IMUREADsrc)
-	$(CXX) $(LDFLAGS) $(IMU_INC) -o $(IMU_BIN) $(IMUREADsrc) $(IMU_OBJS) $(LDLIBS)
+$(IMU_BIN): $(IMUREADsrc) $(IMU_OBJS)
+	$(CXX) $(LDFLAGS) $(IMU_INC) -o $@ $^ $(LDLIBS)
 
-$(MAG_BIN): $(MAG_OBJS) $(MAGREADsrc)
-	$(CXX) $(LDFLAGS) $(MAG_INC) -o $(MAG_BIN) $(MAGREADsrc) $(MAG_OBJS) $(LDLIBS)
+$(MAG_BIN): $(MAGREADsrc) $(MAG_OBJS) 
+	$(CXX) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
 
-$(MAGCONFIG_BIN): $(MAG_OBJS) $(MAGCONFIGsrc)
-	$(CXX) $(LDFLAGS) $(MAG_INC) -o $(MAGCONFIG_BIN) $(MAGCONFIGsrc) $(MAG_OBJS) $(LDLIBS)
+$(MAGCONFIG_BIN): $(MAGCONFIGsrc) $(MAG_OBJS)
+	$(CXX) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
 
 $(I2Cobj): $(I2Csrc) $(I2Csrc:%.cpp=%.h)
 
 $(IMUobj): $(IMUsrc) $(IMUsrc:%.cpp=%.h)
-	$(CXX) $(CPPFLAGS) $(IMU_INC) -c $(IMUsrc) -o $(IMUobj)
+	$(CXX) $(CPPFLAGS) $(IMU_INC) -c $< -o $@
 
 $(MAGobj): $(MAGsrc) $(MAGsrc:%.cpp=%.h)
-	$(CXX) $(CPPFLAGS) $(MAG_INC) -c $(MAGsrc) -o $(MAGobj)
+	$(CXX) $(CPPFLAGS) $(MAG_INC) -c $< -o $@
 
 clean:
-	rm -f $(IMU_OBJS) $(MAG_OBJS)
-	rm -f bin/imu_reader
-	rm -f bin/mag_reader
+	rm -f $(IMU_OBJS) $(MAG_OBJS) $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN)

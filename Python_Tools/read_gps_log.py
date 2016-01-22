@@ -3,6 +3,8 @@
 
 Author: Adam Werries, awerries@cmu.edu
 
+For pre-parsed format, see pg420 at http://www.novatel.com/assets/Documents/Manuals/om-20000129.pdf 
+
 New Format:  1     2                   3               4  5  6  7      8      9      10  11  12  13      14      15      16        17
              time, sol good? (1 or 0), WAAS? (1 or 0), x, y, z, sig_x, sig_y, sig_z, vx, vy, vz, sig_vx, sig_vy, sig_vz, num_sats, sol_sats 
 """

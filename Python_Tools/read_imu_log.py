@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 import statistics
 import re
+""" Code parses output from Sparkfun Razor IMU and writes to a matlab-friendly csv file.
+Author: Adam Werries, awerries@cmu.edu
+
+Pre-parsed format is user-specified, as the Razor is essentially an Arduino. Arduino code included in this repo.
+
+%Format:  1     2        3        4        5       6       7
+%         time, accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z
+"""
 def parse():
 	f = open('imu1_log.txt','r')
 	fout = open('imu1_log_parsed.txt', 'w')

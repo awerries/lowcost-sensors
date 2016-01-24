@@ -23,7 +23,7 @@ def open_serial(port_flags):
     imu1, imu2, gps = None, None, None
     if port_flags[0]:
         imu1 = serial.Serial(port='/dev/ttyUSB1', baudrate=57600,
-                parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, 
+                parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                 bytesize=serial.EIGHTBITS, timeout=0)
 
     if port_flags[1]:

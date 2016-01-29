@@ -1,7 +1,5 @@
-CC = gcc
-CXX = g++
-CPPFLAGS = -g -Wall -Wpedantic -Wextra
-LDFLAGS = -g
+CPP = g++ -g
+CPPFLAGS = -Wall -Wpedantic -Wextra
 LDLIBS = -lbcm2835 -lm
 MKDIR_P = mkdir -p
 BASEDIR = $(shell pwd)
@@ -41,24 +39,24 @@ $(BIN_DIR):
 	$(MKDIR_P) $(BIN_DIR)
 
 $(IMU_BIN): $(IMUREADsrc) $(IMU_OBJS)
-	$(CXX) $(LDFLAGS) $(IMU_INC) -o $@ $^ $(LDLIBS)
+	$(CPP) $(LDFLAGS) $(IMU_INC) -o $@ $^ $(LDLIBS)
 
 $(MAG_BIN): $(MAGREADsrc) $(MAG_OBJS) 
-	$(CXX) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
+	$(CPP) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
 
 $(MAGCONFIG_BIN): $(MAGCONFIGsrc) $(MAG_OBJS)
-	$(CXX) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
+	$(CPP) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
 
 $(MAGRESET_BIN): $(MAGRESETsrc) $(MAG_OBJS)
-	$(CXX) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
+	$(CPP) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
 
 $(I2Cobj): $(I2Csrc) $(I2Csrc:%.cpp=%.h)
 
 $(IMUobj): $(IMUsrc) $(IMUsrc:%.cpp=%.h)
-	$(CXX) $(CPPFLAGS) $(IMU_INC) -c $< -o $@
+	$(CPP) $(CPPFLAGS) $(IMU_INC) -c $< -o $@
 
 $(MAGobj): $(MAGsrc) $(MAGsrc:%.cpp=%.h)
-	$(CXX) $(CPPFLAGS) $(MAG_INC) -c $< -o $@
+	$(CPP) $(CPPFLAGS) $(MAG_INC) -c $< -o $@
 
 clean:
 	rm -f $(IMU_OBJS) $(MAG_OBJS) $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN)

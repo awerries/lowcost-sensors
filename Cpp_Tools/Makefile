@@ -1,4 +1,4 @@
-CPP = g++ -g
+CPP = g++ -Og
 CPPFLAGS = -Wall -Wpedantic -Wextra
 LDLIBS = -lbcm2835 -lm
 MKDIR_P = mkdir -p

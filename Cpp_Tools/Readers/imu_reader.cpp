@@ -33,8 +33,8 @@ int main(int argc, char **argv) {
     FILE *f = fopen(filename_buffer, "w");
     
     // Initialize I2C and the sensor itself
-    const float accel_scaling = 4.0/32767.0;
-    const float gyro_scaling = 500.0/32767.0*PI/180.0;
+    const float accel_scaling = 2.0/32767.0;
+    const float gyro_scaling = 250.0/32767.0*PI/180.0;
     I2Cdev::initialize();
     MPU6050 imu;
     int16_t ax, ay, az;

@@ -81,7 +81,7 @@ def main(argv):
     line2 = list()
     line3 = list()
 
-    now = datetime.now().replace(microsecond=0).isoformat().translate(None, ':')
+    now = datetime.now().replace(microsecond=0).isoformat()
 
     try:
         print('Opening serial...')
@@ -93,10 +93,10 @@ def main(argv):
             imu1.write(start)
             imu1.flush()
         if imu2:
-            imu2_log = open('imu2_log_{1}.log'.format(now), 'w')
+            imu2_log = open('imu2_log_{0}.log'.format(now), 'w')
             imu2.flush()
         if gps:
-            gps_log = open('gps_log_{2}.log'.format(now), 'w')
+            gps_log = open('gps_log_{0}.log'.format(now), 'w')
             gps.readline()
             gps.flush()
 

@@ -14,6 +14,7 @@ IMUREADsrc = Readers/imu_reader.cpp
 MAGREADsrc = Readers/mag_reader.cpp
 MAGCONFIGsrc = Config_Tools/mag_config.cpp
 MAGRESETsrc = Config_Tools/reset_mag_offsets.cpp
+GPSREADsrc = Readers/skytraq_reader.cpp
 BIN_DIR = bin
 
 IMU_BIN := $(BIN_DIR)/imu_reader
@@ -28,10 +29,12 @@ MAG_SRCS := $(I2Csrc) $(MAGsrc)
 MAG_OBJS := $(I2Cobj) $(MAGobj)
 MAG_INC := -II2Cdev -IHMC6343
 
+GPS_BIN := $(BIN_DIR)/skytraq_reader
+
 
 .PHONY: directories
 
-all: directories $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN) $(MAGRESET_BIN)
+all: directories $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN) $(MAGRESET_BIN) $(GPS_BIN)
 
 directories: $(BIN_DIR)
 
@@ -50,6 +53,9 @@ $(MAGCONFIG_BIN): $(MAGCONFIGsrc) $(MAG_OBJS)
 $(MAGRESET_BIN): $(MAGRESETsrc) $(MAG_OBJS)
 	$(CPP) $(LDFLAGS) $(MAG_INC) -o $@ $^ $(LDLIBS)
 
+$(GPS_BIN): $(GPSREADsrc)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
 $(I2Cobj): $(I2Csrc) $(I2Csrc:%.cpp=%.h)
 
 $(IMUobj): $(IMUsrc) $(IMUsrc:%.cpp=%.h)
@@ -59,4 +65,4 @@ $(MAGobj): $(MAGsrc) $(MAGsrc:%.cpp=%.h)
 	$(CPP) $(CPPFLAGS) $(MAG_INC) -c $< -o $@
 
 clean:
-	rm -f $(IMU_OBJS) $(MAG_OBJS) $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN)
+	rm -f $(IMU_OBJS) $(MAG_OBJS) $(IMU_BIN) $(MAG_BIN) $(MAGCONFIG_BIN) $(GPS_BIN)
